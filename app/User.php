@@ -41,4 +41,17 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Post');
     }
+
+    public function user_can_successfully_login()
+    {
+        $user = factory(App\User::class)->create([ 'password' => 'password' ]);
+
+        $this->visit('/login')
+            ->type($user->email, 'email')
+            ->type('password', 'password')
+            ->press('submit')
+            ->seePageIs('/');
+
+        return dd($this->response->getContent());
+    }
 }
